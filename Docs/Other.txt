@@ -1,0 +1,14 @@
+Could also have gotten messages with a console app through GetMessage(lpMsg, GetConsoleWindow(), 0, 0)
+and a while true loop in order to not use timer that has a minimum timeout value of 10 ms i think...
+upd.
+However, it seems that the OS sends WM_INPUT messages in about 7-10 ms interval when there's a continuous input,
+so the benefits are neglibible.
+Also, the manual sleep timeout in a loop would add latency to all inputs, even WM_INPUT ones.
+
+
+grab a mouse pointer handle as a source device and modify it instead of assigning pressure flags myself?
+
+could have send custom WM_INPUT messages here instead of injecting input directly in WM_TIMER i think
+upd. theres already a duplicate input sending by the system for buttons so no.
+
+CtrAlt is for color picking in PS

@@ -1,0 +1,80 @@
+USAGE_PAGE  = 5
+USAGE_ID    = 1
+
+# bytes reserved?
+[0, 13, 14] bytes = 0
+
+
+# STICKS		[1-8] bytes
+# LEFT_TO_RIGHT	[0, 255] values
+# UP_TO_DOWN	[0, 255] values
+
+# NOTE1: left stick is pretty inaccurate
+# NOTE2: they both capture lots of noise actually
+
+LEFT_STICK_LEFTRIGHT	= [1-2] bytes
+LEFT_STICK_UPDOWN		= [3-4] bytes
+
+RIGHT_STICK_LEFTRIGHT   = [5-6] bytes
+RIGHT_STICK_UPDOWN      = [7-8] bytes? bad accuracy
+
+
+# TRIGGERS		[9-10] bytes
+# [9] byte:
+# two values: 0, 128
+# equals 128 when derivative of [10] byte changes sign? or when theres major change in [10] byte? not sure
+
+# [10] byte:
+# LT			[0,		127] values
+# RT			[0,	   -128] values
+# 128 + LT + RT [0,		255] values
+128 + LT + RT	= [10] byte
+
+
+# BUTTONS		[11] byte
+# they all are bit flags that get added to the byte value
+# A + ... + START [0, 255] values
+A		= 1		# 0b00000001
+B		= 2		# 0b00000010
+X		= 4		# 0b00000100
+Y		= 8		# 0b00001000
+LB		= 16	# 0b00010000
+RB		= 32	# 0b00100000
+BACK	= 64	# 0b01000000
+START	= 128	# 0b10000000
+A + ... + START = [11] byte
+
+
+# STICK BUTTONS [12] byte
+# these buttons work the same way
+# they also share byte with DPAD
+# LEFT_STICK_BTN + RIGHT_STICK_BTN [0, 3] values
+LEFT_STICK_BTN	= 1	# 0b00000001
+RIGHT_STICK_BTN	= 2	# 0b00000010
+STICK_BUTTON_VALUE = LEFT_STICK_BTN + RIGHT_STICK_BTN values [0, 3]
+
+# DPAD			[12] byte
+# it writes to the same byte the previous buttons do
+# but they are NOT FLAGS
+# instead, each button code steps up by 4
+# [12] byte values [0, 32]
+NONE				= 0		# 0b00000000
+UP					= 4		# 0b00000100
+UP/RIGHT			= 8		# 0b00001000
+RIGHT				= 12	# 0b00001100
+DOWN/RIGHT			= 16	# 0b00010000
+DOWN				= 20	# 0b00010100
+DOWN/LEFT			= 24	# 0b00011000
+LEFT				= 28	# 0b00011100
+UP/LEFT				= 32	# 0b00100000
+DPAD_BUTTON_VALUE	= [NONE, UP/LEFT] values [0, 32]
+# notice these buttons do not occupy two last bits as they are reserved for STICK BUTTONS
+
+STICK_BUTTON_VALUE + DPAD_BUTTON_VALUE = [12] byte
+
+
+128,  236
+  0,  233
+
+  0,   91
+128,   30

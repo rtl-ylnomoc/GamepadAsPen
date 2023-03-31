@@ -43,7 +43,7 @@ inline void HandleDpadButtonsPress() {
 	}
 	if ((stickDpadBtns >> 2) == (DPAD_RIGHT >> 2)) {
 		// Undo
-		AddKeyPress(inputs, inpSent, CtrAlt);
+		AddKeyPress(inputs, inpSent, VK_LCONTROL);
 		AddKeyPress(inputs, inpSent, VK_LSHIFT);
 		AddKeyPress(inputs, inpSent, 0x5A); // Z
 	}
@@ -53,7 +53,7 @@ inline void HandleDpadButtonsPress() {
 	}
 	if ((stickDpadBtns >> 2) == (DPAD_LEFT >> 2)) {
 		// Redo
-		AddKeyPress(inputs, inpSent, CtrAlt);
+		AddKeyPress(inputs, inpSent, VK_LCONTROL);
 		AddKeyPress(inputs, inpSent, 0x5A); // Z
 	}
 	// SEND DPAD INPUT

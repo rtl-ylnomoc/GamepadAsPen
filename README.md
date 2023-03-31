@@ -1,7 +1,14 @@
-# GamepadAsPen
+# Gamepad As Pen
 
 As the description says, this app converts gamepad raw input (tested only on xbox 360 controller) to pen input using WinApi (obviously only Windows is supported).  
 This means, you can use your gamepad analog input to emulate drawing pen's pressure sensitivity, tilt and rotation (which is unused mostly).  
+
+## Launch
+
+Simply launch the executable.  
+Note that Windows Defender is wary of this app.
+
+### !IMPORTANT! Injected pen input from InjectSyntheticPointerInput function won't be captured by applications with higher integrity levels. That's why it's better to launch the program as an administrator (same as for SendInput see https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput#remarks).
 
 ## Setup
 

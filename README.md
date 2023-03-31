@@ -29,3 +29,27 @@ No idea how to structure C++ code, pretty new to this language.
 1. Lots of headers because I saw that importing a library using only a header was good practice, so I did the structure how I thought it was implemented there.  
 1. Lots of globals for zero allocations and near zero stack pushing popping when program starts message handling for maximum performance which is important for user input applcications such as this one
 1. Lots of inlines because the IDE told me to do it and also it might reduce stack usage overhead as well.
+
+## Viruses?
+
+Some VirusTotal results with the first release:
+
+### Detection
+
+![image](https://user-images.githubusercontent.com/24192051/229059236-955924c8-fd82-4c01-bfb4-6b80438458a8.png)
+
+### Relations
+
+![image](https://user-images.githubusercontent.com/24192051/229059507-271784a1-aea3-49fa-afdb-75d3fdb2ae30.png)
+
+### Behaviour
+
+![image](https://user-images.githubusercontent.com/24192051/229059872-3bcda221-892b-499e-b522-c8b109837d0c.png)
+
+It seems that the main reasons causing this sometimes to be treated as a virus are:
+1. Removed non-client area
+2. Transparent client area
+3. Obviosly, reading and injecting input  
+
+Above suspicious behaviour is pretty much required considering the intended purpose of the application.
+If you have .exe phobia then you can read the source code and build it yourself anyhow.

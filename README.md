@@ -21,7 +21,7 @@ To setup repo to work in Visual Studio just cloning and launching .sln file shou
 If you want to map your own shortcuts, you can simply modify ShortcutInputHandlers.hpp by adding key and mouse presses in the corresponding handlers and if clauses   (changing LT, RT, RB, LS, RS and stick buttons behaviour would require a more significant rewriting and understanding of the code structure).  
 
 You can also easily make assigntments to unused buttons, such as Y, A, BACK and START (DPAD diagonal buttons can be used too, but you would press them accidentally a lot).  
-Note that big xbox guide button in the center is not open to the public API and isn't being sent as RAWINPUT; however, it still sends WM_INPUT messages, just like normal buttons.
+Note that big xbox guide button in the center is not open to the public API and isn't being sent anywhere in raw data byte array; however, it still sends WM_INPUT messages, just like normal buttons.
 
 ## Structure
 

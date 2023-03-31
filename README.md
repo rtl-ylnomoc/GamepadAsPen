@@ -49,7 +49,7 @@ Some VirusTotal results with the first release:
 It seems that the main reasons causing this sometimes to be treated as a virus are:
 1. Removed non-client area
 2. Transparent client area
-3. Obviosly, reading and injecting input  
+3. Obviously, reading and injecting input  
 
 Above suspicious behaviour is pretty much required considering the intended purpose of the application.
 If you have .exe phobia then you can read the source code and build it yourself anyhow.

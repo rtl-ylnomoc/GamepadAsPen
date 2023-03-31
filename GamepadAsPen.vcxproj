@@ -151,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\appIcon.ico" />
+    <Image Include="Resources\appIcon.png" />
     <Image Include="Resources\closeIcon.ico" />
     <Image Include="Resources\minimizeIcon.ico" />
     <Image Include="res\appIcon.ico" />

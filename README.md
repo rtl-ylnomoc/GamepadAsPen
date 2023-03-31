@@ -18,7 +18,9 @@ To setup repo to work in Visual Studio just cloning and launching .sln file shou
 
 ![GamepadInputMap](https://user-images.githubusercontent.com/24192051/228993390-bfc2a2a4-e39b-409d-8fe8-0711ea822a44.png)
 
-If you want to map your own shortcuts, simply build it yourself. In this case, you can modify ShortcutInputHandlers.hpp by adding key and mouse presses in the corresponding handlers and if clauses (changing LT, RT, RB and stick buttons behaviour would require a more significant rewriting and understanding of the code structure).
+If you want to map your own shortcuts, you can simply modify ShortcutInputHandlers.hpp by adding key and mouse presses in the corresponding handlers and if clauses   (changing LT, RT, RB, LS, RS and stick buttons behaviour would require a more significant rewriting and understanding of the code structure).  
+You can also easily make assigntments to unused buttons, such as Y, A, BACK and START.  
+Note that big xbox guide button in the center is not open to the public API and isn't being sent as RAWINPUT; however, it still sends WM_INPUT messages, just like normal buttons
 
 ## Structure
 

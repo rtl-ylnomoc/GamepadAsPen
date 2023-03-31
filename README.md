@@ -3,7 +3,7 @@
 As the description says, this app converts gamepad raw input (tested only on xbox 360 controller) to pen input using WinApi (obviously only Windows is supported).  
 This means, you can use your gamepad analog input to emulate drawing pen's pressure sensitivity, tilt and rotation (which is unused mostly).  
 
-I haven't found ANY alternatives of such program in a month time span. The only things I've found that emulate pen input are converters of mobile input to drawing tablet input and some random laggy app written with SDL which does things similar to my program, except that it does so only in it's own app window (does not inject input to other apps at all), that thing was essentially a weird featureless drawing-with-gamepad app.  
+I haven't found ANY alternatives of such program in a month time span. The only things I've found that emulate pen input are drivers that convert mobile input to drawing tablet input and some random laggy app written with SDL which does things similar to my program, except that it does so only in it's own app window (does not inject input to other apps at all), that thing was essentially a weird featureless drawing-with-gamepad app.  
 So I just learned C++ and WinApi a little and made this (don't try this at home the documentation and the API itself is a Machiavellian horror).
 
 ## Launch

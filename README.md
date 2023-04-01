@@ -35,8 +35,10 @@ No idea how to structure C++ code, pretty new to this language.
 
 ## Viruses?
 
-Some VirusTotal results with the first release:
-
+Some VirusTotal results with the first release:  
+  
+https://www.virustotal.com/gui/file/c6940e7161606d43d86013fa2e0cec61ffdfad0a00271220990592786d9bd57c/behavior
+  
 ### Detection
 
 ![image](https://user-images.githubusercontent.com/24192051/229059236-955924c8-fd82-4c01-bfb4-6b80438458a8.png)

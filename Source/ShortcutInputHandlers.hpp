@@ -17,9 +17,8 @@ inline void HandleGamepadButtonsPress() {
 		AddKeyPress(inputs, inpSent, CtrAlt);
 		AddMousePress(inputs, inpSent, MOUSEEVENTF_LEFTDOWN);
 	}
-	// SEND GPAD INPUT
+	// SEND GPAD INPUT (if at least one GPAD input is set)
 	if (inpSent && !SendInput(inpSent, inputs, sizeof(INPUT))) {
-		// Send input if at least one input is set
 		_RPTF1(_CRT_ERROR, "SEND INPUT FAILED [%3d]\n", GetLastError());
 	}
 }
@@ -56,9 +55,8 @@ inline void HandleDpadButtonsPress() {
 		AddKeyPress(inputs, inpSent, VK_LCONTROL);
 		AddKeyPress(inputs, inpSent, 0x5A); // Z
 	}
-	// SEND DPAD INPUT
+	// SEND DPAD INPUT (if at least one DPAD input is set)
 	if (inpSent && !SendInput(inpSent, inputs, sizeof(INPUT))) {
-		// Send input if at least one input is set
 		_RPTF1(_CRT_ERROR, "SEND INPUT FAILED [%3d]\n", GetLastError());
 	}
 }

@@ -2,7 +2,7 @@
 #include "Constants.hpp"
 
 
-inline int ConvertPressure(BYTE byte) {
+inline int ConvertPressure(BYTE byte) { // properly converts byte info from both triggers to pressure (128: 0, {0, 255}: 1024)
 	return byte > 128 ? (byte - 127) * 8 : -(byte - 128) * 8;
 }
 

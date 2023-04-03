@@ -15,7 +15,7 @@ inline void HandlePenModifiersState() {
 }
 
 inline void HandlePenBarrelStateChange() {
-	// seems to be equivalent to rmb so I could have just mapped it as a gamepad shortcut above to rmb mouse input
+	// seems to be equivalent to rmb so I could have just mapped it as a gamepad shortcut to rmb mouse input
 	if ((!ptInfo->penInfo.penFlags & PEN_FLAG_BARREL) && (pRaw->data.hid.bRawData[11] & GP_RB)) {
 		_RPT0(_CRT_WARN, "BARREL PRESSED\n");
 		ptInfo->penInfo.penFlags |= PEN_FLAG_BARREL | PEN_FLAG_ERASER; // unsure about these flags
@@ -35,7 +35,7 @@ inline void HandlePenBarrelStateChange() {
 }
 
 inline void HandlePenPressureStateChange() {
-	curPressure = ConvertPressure(pRaw->data.hid.bRawData[10]); // abs(pRaw->data.hid.bRawData[10] - 128) * 8;
+	curPressure = ConvertPressure(pRaw->data.hid.bRawData[10]);
 	if (!ptInfo->penInfo.pressure && !curPressure) {
 		ptInfo->penInfo.pointerInfo.pointerFlags |= POINTER_FLAG_UPDATE;
 	}

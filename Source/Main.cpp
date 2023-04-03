@@ -7,19 +7,17 @@
 
 // Using lots of globals to use stack and allocations less.
 // Also, the window procedure then would not match the lpfWndProc signature apparently.
-// BUG FIXED: when color picker action was performed on the window caption buttons, the window stops receiving messages
-// upd. removed most of built-in winapi app functionality that causes problems.
+// upd. Removed most of built-in winapi app functionality that causes problems.
 
-int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE, TCHAR* szCmdLine, int nCmdShow) {
+int CALLBACK wWinMain(const HINSTANCE hInstance, const HINSTANCE, TCHAR* szCmdLine, const int nCmdShow) {
 	MSG msg{};
-	HWND hWnd{};
 	// wc is global
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hbrBackground = reinterpret_cast<HBRUSH>(GetStockObject(WHITE_BRUSH));
 	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON));
-	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APP_ICON));
+	wc.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(APP_ICON));
+	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(APP_ICON));
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = HandleMessages;
 	wc.lpszClassName = TEXT("GPADASPEN");
@@ -31,46 +29,51 @@ int CALLBACK wWinMain(HINSTANCE hInstance, HINSTANCE, TCHAR* szCmdLine, int nCmd
 
 	// CREATE APP WINDOW
 	// for some reason can't remove borders using flags in this function
-	hWnd = CreateWindowEx(WS_EX_LAYERED, wc.lpszClassName, TEXT("Gamepad As Pen"), WS_OVERLAPPEDWINDOW, 0, 0, width, height,
-	                      nullptr, nullptr, wc.hInstance, nullptr);
+	HWND hWnd = CreateWindowEx(WS_EX_LAYERED, wc.lpszClassName, TEXT("Gamepad As Pen"), WS_OVERLAPPEDWINDOW,
+		0, 0, WIDTH, HEIGHT, // position, dimensions
+		nullptr, nullptr, wc.hInstance, nullptr);
 	if (hWnd == INVALID_HANDLE_VALUE) {
 		return EXIT_FAILURE;
 	}
 
 	// REMOVE BORDERS
-	LONG lStyle = GetWindowLong(hWnd, GWL_STYLE);
-	lStyle &= ~(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU);
-	SetWindowLong(hWnd, GWL_STYLE, lStyle);
+	SetWindowLong(hWnd,
+		GWL_STYLE,
+		GetWindowLong(hWnd, GWL_STYLE) & ~(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU));
 	_RPTF1(_CRT_WARN, "STYLES [%3d]\n", GetWindowLong(hWnd, GWL_STYLE));
 
 	// MAKE TRANSPARENT
-	SetLayeredWindowAttributes(hWnd, 0, 230, LWA_ALPHA); // colorkey doesn't work sadly
+	SetLayeredWindowAttributes(hWnd, 0, 230, LWA_ALPHA); // color key doesn't work sadly
 
 	// ADD SHADOW
-	const MARGINS shadow_on = {0, -10, 0, -10};
+	constexpr MARGINS shadow_on = { 0, -10, 0, -10 };
 	DwmExtendFrameIntoClientArea(hWnd, &shadow_on);
 
 	// CENTER WINDOW
-	HMONITOR hMon = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST);
-	auto lpmi = new MONITORINFO{sizeof(MONITORINFO)};
-	short x = 710; // assume user monitor has 1920x1080 resolution
-	short y = 290;
-	if (!GetMonitorInfo(hMon, lpmi)) {
+	constexpr long x = (1920 - WIDTH) / 2; // center coordinates (initially assume user monitor has 1920x1080 resolution)
+	constexpr long y = (1080 - HEIGHT) / 2;
+	const auto lpmi = new MONITORINFO{ sizeof(MONITORINFO) };
+	if (!GetMonitorInfo(
+		MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST),
+		lpmi)) {
 		_RPTF1(_CRT_ERROR, "GET MONITOR INFO FAILED [%3d]\n", GetLastError());
 	}
 	else {
-		x = lpmi->rcMonitor.right - (lpmi->rcMonitor.right - lpmi->rcMonitor.left + width) / 2;
-		y = lpmi->rcMonitor.bottom - (lpmi->rcMonitor.bottom - lpmi->rcMonitor.top + height) / 2;
+		long x = lpmi->rcMonitor.right - (lpmi->rcMonitor.right - lpmi->rcMonitor.left + WIDTH) / 2;
+		long y = lpmi->rcMonitor.bottom - (lpmi->rcMonitor.bottom - lpmi->rcMonitor.top + HEIGHT) / 2;
 	}
 	SetWindowPos(hWnd, nullptr, x, y, 0, 0, SWP_NOSIZE);
 
-	// REGISTER GAMEPAD (don't know if raw input solution works for non xbox controllers)
-	const auto Rid = new RAWINPUTDEVICE;
-	Rid->usUsagePage = 0x01; // HID_USAGE_PAGE_GENERIC
-	Rid->usUsage = 0x05;	// HID_USAGE_GENERIC_GAMEPAD
-	Rid->dwFlags = RIDEV_INPUTSINK;
-	Rid->hwndTarget = hWnd;
-	if (!RegisterRawInputDevices(Rid, 1, sizeof(Rid[0]))) {
+	// REGISTER GAMEPAD (no clue if raw input solution works for non xbox controllers)
+	if (!RegisterRawInputDevices(
+		new RAWINPUTDEVICE{
+			.usUsagePage = 0x01,		// HID_USAGE_PAGE_GENERIC
+			.usUsage = 0x05,			// HID_USAGE_GENERIC_GAMEPAD
+			.dwFlags = RIDEV_INPUTSINK,
+			.hwndTarget = hWnd
+		},
+		1,
+		sizeof(RAWINPUTDEVICE))) {
 		_RPTF1(_CRT_ERROR, "REGISTER DEVICE FAILED [%3d]\n", GetLastError());
 		return EXIT_FAILURE;
 	}

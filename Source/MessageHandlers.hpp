@@ -1,4 +1,6 @@
 #pragma once
+#include <uxtheme.h>
+
 #include "Buttons.hpp"
 #include "Globals.hpp"
 #include "Constants.hpp"
@@ -7,10 +9,11 @@
 
 
 inline LRESULT HandleWindowCreate(const HWND hWnd) {
-	SetTimer(hWnd, 0, USER_TIMER_MINIMUM, 0); // timer for updating simulated tablet pen when no WM_INPUT
+	SetTimer(hWnd, 0, USER_TIMER_MINIMUM, nullptr); // timer for updating simulated tablet pen when no WM_INPUT
 	AddCheckBox(hWnd);
 	AddMinimizeButton(hWnd);
 	AddCloseButton(hWnd);
+	SendMessage(hWnd, WM_CHANGEUISTATE, MAKEWPARAM(UIS_SET, UISF_HIDEFOCUS), 0); // should remove selection borders
 	ShowWindow(hWnd, SW_RESTORE); // showing here cuz it fixes initialization bugs with transparency.
 	return EXIT_SUCCESS;
 }
@@ -19,7 +22,7 @@ inline LRESULT HandleWindowCommand(const HWND hWnd, const WPARAM wParam) {
 	switch (LOWORD(wParam)) {
 	case 0: {
 		// Checkbox that toggles between Ctrl and Alt buttons for LB shortcut
-		CtrAlt += CtrAlt == VK_LCONTROL ? 2 : -2;
+		CtrAlt += CtrAlt == VK_LCONTROL ? 2 : -2; // VK_LCONTROL and VK_LMENU are two values apart
 		return EXIT_SUCCESS;
 	}
 	case 1: {

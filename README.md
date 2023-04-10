@@ -16,9 +16,10 @@ Note that Windows Defender is wary of this app.
 
 ## Build
 
-Only x86 builds work correctly. With x64 there might be some weird manifests arch-specific versions collisions or no child buttions shown.
+Only x86 builds work correctly. With x64 there might be some weird manifests arch-specific versions collisions or no child buttions shown.  
+
 upd. Just need to change the root GamepadAsPen.manifest file "x86" literals to "amd64" if you really need to build for x64.  
-Also "\*" throws cuz of microsoft and their micro soft things.
+Also "\*" throws because microsoft.
 
 To setup repo to work in Visual Studio just cloning and launching .sln file should be enough.
 

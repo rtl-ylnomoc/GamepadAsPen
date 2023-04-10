@@ -14,7 +14,11 @@ Note that Windows Defender is wary of this app.
 
 ### !IMPORTANT! Injected pen input from InjectSyntheticPointerInput function won't be captured by applications with higher integrity levels. That's why it's better to launch the program as an administrator (same as for SendInput see https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput#remarks).
 
-## Setup
+## Build
+
+Only x86 builds work correctly. With x64 there might be some weird manifests arch-specific versions collisions or no child buttions shown.
+upd. Just need to change the root GamepadAsPen.manifest file "x86" literals to "amd64" if you really need to build for x64.  
+Also "\*" throws cuz of microsoft and their micro soft things.
 
 To setup repo to work in Visual Studio just cloning and launching .sln file should be enough.
 
@@ -26,6 +30,20 @@ If you want to map your own shortcuts, you can simply modify ShortcutInputHandle
 
 You can also easily make assigntments to unused buttons, such as Y, A, BACK and START (DPAD diagonal buttons can be used too, but you would press them accidentally a lot).  
 Note that big xbox guide button in the center is not open to the public API and isn't being sent anywhere in raw data byte array; however, it still sends WM_INPUT messages, just like normal buttons.
+
+## Compatibility buttons
+
+### Blender
+
+For some reason, Blender does not recognize injected shift button (everything else, including undo, seems to work, though).  
+
+upd. Fixed with by using keybd_event for shift.
+
+### Photoshop
+
+Krita and Photoshop color picking hotkeys are different.
+
+To make color picking shortcut button (LB) work, press Ctrl+LMB -> Alt+LMB checkbox
 
 ## Structure
 

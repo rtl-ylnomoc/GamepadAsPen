@@ -71,6 +71,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <GenerateManifest>true</GenerateManifest>
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <GenerateManifest>true</GenerateManifest>
+    <EmbedManifest>true</EmbedManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <GenerateManifest>true</GenerateManifest>
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <GenerateManifest>true</GenerateManifest>
+    <EmbedManifest>true</EmbedManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -84,10 +100,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>HighestAvailable</UACExecutionLevel>
       <UACUIAccess>false</UACUIAccess>
+      <AllowIsolation>true</AllowIsolation>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>GamepadAsPen.manifest</AdditionalManifestFiles>
       <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
@@ -107,12 +123,17 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>HighestAvailable</UACExecutionLevel>
-      <UACUIAccess>true</UACUIAccess>
+      <UACUIAccess>false</UACUIAccess>
+      <AllowIsolation>true</AllowIsolation>
+      <EnableUAC>true</EnableUAC>
+      <ManifestFile>$(TargetPath).intermediate.manifest</ManifestFile>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>GamepadAsPen.manifest</AdditionalManifestFiles>
       <EnableDpiAwareness>true</EnableDpiAwareness>
+      <AdditionalOptions>/validate_manifest %(AdditionalOptions)</AdditionalOptions>
+      <UpdateFileHashes>true</UpdateFileHashes>
+      <OutputManifestFile>$(TargetPath).manifest</OutputManifestFile>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,10 +149,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>HighestAvailable</UACExecutionLevel>
       <UACUIAccess>false</UACUIAccess>
+      <AllowIsolation>true</AllowIsolation>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>GamepadAsPen.manifest</AdditionalManifestFiles>
       <EnableDpiAwareness>true</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
@@ -151,12 +172,17 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>HighestAvailable</UACExecutionLevel>
-      <UACUIAccess>true</UACUIAccess>
+      <UACUIAccess>false</UACUIAccess>
+      <AllowIsolation>true</AllowIsolation>
+      <EnableUAC>true</EnableUAC>
+      <ManifestFile>$(TargetPath).intermediate.manifest</ManifestFile>
     </Link>
     <Manifest>
-      <AdditionalManifestFiles>
-      </AdditionalManifestFiles>
+      <AdditionalManifestFiles>GamepadAsPen.manifest</AdditionalManifestFiles>
       <EnableDpiAwareness>true</EnableDpiAwareness>
+      <AdditionalOptions>/validate_manifest %(AdditionalOptions)</AdditionalOptions>
+      <UpdateFileHashes>true</UpdateFileHashes>
+      <OutputManifestFile>$(TargetPath).manifest</OutputManifestFile>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -194,7 +220,10 @@
     <None Include="GamepadAsPen.aps" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="manifest.xml" />
+    <Xml Include="GamepadAsPen.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="Debug\GamepadAsPen.exe.intermediate.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

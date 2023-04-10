@@ -1,8 +1,6 @@
-#pragma comment (lib, "dwmapi.lib")
 #include "Constants.hpp"
 #include "Globals.hpp"
 #include "MessageHandlers.hpp"
-#include <dwmapi.h>
 #include <Windows.h>
 
 // Using lots of globals to use stack and allocations less.
@@ -20,42 +18,28 @@ int CALLBACK wWinMain(const HINSTANCE hInstance, const HINSTANCE, TCHAR* szCmdLi
 	wc.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(APP_ICON));
 	wc.hInstance = hInstance;
 	wc.lpfnWndProc = HandleMessages;
-	wc.lpszClassName = TEXT("GPADASPEN");
+	wc.lpszClassName = TEXT("GAMEPADASPEN");
 	wc.lpszMenuName = nullptr;
 	wc.style = CS_VREDRAW | CS_HREDRAW | CS_DROPSHADOW;
-
-	if (!RegisterClassEx(&wc))
+	if (!RegisterClassEx(&wc)) {
 		return EXIT_FAILURE;
+	}
 
 	// CREATE APP WINDOW
+	constexpr long x = (1920 - WIDTH) / 2; // center coordinates (if user monitor has 1920x1080 resolution)
+	constexpr long y = (1080 - HEIGHT) / 2;
 	// for some reason can't remove borders using flags in this function
 	HWND hWnd = CreateWindowEx(WS_EX_LAYERED, wc.lpszClassName, TEXT("Gamepad As Pen"), WS_OVERLAPPEDWINDOW,
-		0, 0, WIDTH, HEIGHT, // position, dimensions
-		nullptr, nullptr, wc.hInstance, nullptr);
+	                           x, y, // default centered position,
+	                           WIDTH, HEIGHT, // dimensions
+	                           nullptr, nullptr, wc.hInstance, nullptr);
 	if (hWnd == INVALID_HANDLE_VALUE) {
 		return EXIT_FAILURE;
 	}
 
-	// REMOVE BORDERS
-	SetWindowLong(hWnd,
-		GWL_STYLE,
-		GetWindowLong(hWnd, GWL_STYLE) & ~(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU));
-	_RPTF1(_CRT_WARN, "STYLES [%3d]\n", GetWindowLong(hWnd, GWL_STYLE));
-
-	// MAKE TRANSPARENT
-	SetLayeredWindowAttributes(hWnd, 0, 230, LWA_ALPHA); // color key doesn't work sadly
-
-	// ADD SHADOW
-	constexpr MARGINS shadow_on = { 0, -10, 0, -10 };
-	DwmExtendFrameIntoClientArea(hWnd, &shadow_on);
-
 	// CENTER WINDOW
-	constexpr long x = (1920 - WIDTH) / 2; // center coordinates (initially assume user monitor has 1920x1080 resolution)
-	constexpr long y = (1080 - HEIGHT) / 2;
-	const auto lpmi = new MONITORINFO{ sizeof(MONITORINFO) };
-	if (!GetMonitorInfo(
-		MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST),
-		lpmi)) {
+	const auto lpmi = new MONITORINFO{sizeof(MONITORINFO)};
+	if (!GetMonitorInfo(MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST), lpmi)) {
 		_RPTF1(_CRT_ERROR, "GET MONITOR INFO FAILED [%3d]\n", GetLastError());
 	}
 	else {
@@ -64,11 +48,27 @@ int CALLBACK wWinMain(const HINSTANCE hInstance, const HINSTANCE, TCHAR* szCmdLi
 	}
 	SetWindowPos(hWnd, nullptr, x, y, 0, 0, SWP_NOSIZE);
 
+	// REMOVE BORDERS
+	SetWindowLong(
+		hWnd,
+		GWL_STYLE,
+		GetWindowLong(hWnd, GWL_STYLE) & ~(WS_CAPTION | WS_THICKFRAME | WS_SYSMENU));
+	_RPTF1(_CRT_WARN, "STYLES   [%8x]\n", GetWindowLong(hWnd, GWL_STYLE));
+
+	SetWindowLong(
+		hWnd,
+		GWL_EXSTYLE,
+		GetWindowLong(hWnd, GWL_EXSTYLE)) & ~(WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE);
+	_RPTF1(_CRT_WARN, "EXSTYLES [%8x]\n", GetWindowLong(hWnd, GWL_EXSTYLE));
+
+	// MAKE TRANSPARENT
+	SetLayeredWindowAttributes(hWnd, 0, 230, LWA_ALPHA); // color key doesn't work sadly
+
 	// REGISTER GAMEPAD (no clue if raw input solution works for non xbox controllers)
 	if (!RegisterRawInputDevices(
 		new RAWINPUTDEVICE{
-			.usUsagePage = 0x01,		// HID_USAGE_PAGE_GENERIC
-			.usUsage = 0x05,			// HID_USAGE_GENERIC_GAMEPAD
+			.usUsagePage = 0x01,	// HID_USAGE_PAGE_GENERIC
+			.usUsage = 0x05,		// HID_USAGE_GENERIC_GAMEPAD
 			.dwFlags = RIDEV_INPUTSINK,
 			.hwndTarget = hWnd
 		},
@@ -78,7 +78,8 @@ int CALLBACK wWinMain(const HINSTANCE hInstance, const HINSTANCE, TCHAR* szCmdLi
 		return EXIT_FAILURE;
 	}
 
-	// PEN POINTER STATUS CHECK (defined in globals)
+	// CREATE PEN POINTER (declared in globals)
+	hPen = CreateSyntheticPointerDevice(PT_PEN, 1, POINTER_FEEDBACK_DEFAULT);
 	if (!hPen) {
 		_RPTF1(_CRT_ERROR, "CREATE SYNTHETIC POINTER FAILED [%3d]\n", GetLastError());
 		return EXIT_FAILURE;

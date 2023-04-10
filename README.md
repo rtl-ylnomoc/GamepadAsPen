@@ -24,7 +24,7 @@ To setup repo to work in Visual Studio just cloning and launching .sln file shou
 
 ## Gamepad input map
 
-![GamepadInputMap](https://user-images.githubusercontent.com/24192051/228993390-bfc2a2a4-e39b-409d-8fe8-0711ea822a44.png)
+![GamepadInputMap](https://user-images.githubusercontent.com/24192051/231008620-5debf2a0-296b-4da2-93e0-8324fe6bc181.png)
 
 If you want to map your own shortcuts, you can simply modify ShortcutInputHandlers.hpp by adding key and mouse presses in the corresponding handlers and if clauses   (changing LT, RT, RB, LS, RS and stick buttons behaviour would require a more significant rewriting and understanding of the code structure).  
 

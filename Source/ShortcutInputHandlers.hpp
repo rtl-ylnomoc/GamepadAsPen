@@ -23,8 +23,9 @@ inline void PressGamepadButtons(char& inpSent, INPUT inputs[], BYTE gpadBtns) {
 		AddKeyPress(inputs, inpSent, 0x45); // E key
 	}
 	if (gpadBtns & GP_Y) {
-		// Layer select in Krita / Rotate in Blender
-		AddKeyPress(inputs, inpSent, 0x52); // R key
+		// Transform
+		AddKeyPress(inputs, inpSent, VK_LCONTROL);
+		AddKeyPress(inputs, inpSent, 0x54); // T key
 	}
 	if (gpadBtns & GP_LB) {
 		// Color picker
